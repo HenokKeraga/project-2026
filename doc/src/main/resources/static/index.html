@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>WebSocket Demo Client</title>
+</head>
+<body>
+
+<h2>Spring Boot WebSocket Demo</h2>
+
+<button onclick="connect()">Connect</button>
+<button onclick="disconnect()" disabled="disabled">Disconnect</button>
+<button onclick="send()" disabled="disabled">Send Message</button>
+
+<br/><br/>
+
+<label for="messageInput">Message to Send:</label>
+<input type="text" id="messageInput" value="Test Message" />
+
+<h3>Output:</h3>
+<div id="output" style="border: 1px solid #ccc; padding: 10px; min-height: 100px;"></div>
+
+<script>
+    let ws;
+    const output = document.getElementById('output');
+    const connectButton = document.querySelector('button[onclick="connect()"]');
+    const disconnectButton = document.querySelector('button[onclick="disconnect()"]');
+    const sendButton = document.querySelector('button[onclick="send()"]');
+    const messageInput = document.getElementById('messageInput');
+
+    function log(message) {
+        const p = document.createElement('p');
+        p.innerHTML = message;
+        output.appendChild(p);
+        output.scrollTop = output.scrollHeight; // Scroll to bottom
+    }
+
+    function setConnected(isConnected) {
+        connectButton.disabled = isConnected;
+        disconnectButton.disabled = !isConnected;
+        sendButton.disabled = !isConnected;
+    }
+
+    function connect() {
+        // The URL to your WebSocket endpoint
+        // ws:// for standard, wss:// for secure (HTTPS)
+        ws = new WebSocket("ws://localhost:8081/ws/docs/ce3789f6-f51f-43f1-acc3-6bdd3bf42ba2");
+
+        ws.onopen = function() {
+            log("CONNECTED: Successfully connected to " + ws.url);
+            setConnected(true);
+        };
+
+        ws.onmessage = function(event) {
+            // The message received from the server
+            log("RECEIVED: " + event.data);
+        };
+
+        ws.onclose = function() {
+            log("DISCONNECTED: Connection closed.");
+            setConnected(false);
+        };
+
+        ws.onerror = function(error) {
+            log("ERROR: " + error.message);
+        };
+    }
+
+    function disconnect() {
+        if (ws) {
+            ws.close();
+        }
+        setConnected(false);
+    }
+
+    function send() {
+        if (ws && ws.readyState === WebSocket.OPEN) {
+            const message = messageInput.value;
+            // You must send a TextMessage (which is just a string in the client)
+            ws.send(message);
+            log("SENT: " + message);
+        } else {
+            log("ERROR: Not connected or connection is closing/closed.");
+        }
+    }
+
+    setConnected(false);
+</script>
+</body>
+</html>

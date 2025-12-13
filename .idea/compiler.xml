@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="doc" options="-parameters" />
+      <module name="doc.main" options="-parameters" />
+      <module name="doc.test" options="-parameters" />
+      <module name="project-2026.doc" options="-parameters" />
+      <module name="project-2026.doc.main" options="-parameters" />
+      <module name="project-2026.doc.test" options="-parameters" />
+      <module name="project-2026.twitter" options="-parameters" />
+      <module name="project-2026.twitter.main" options="-parameters" />
+      <module name="project-2026.twitter.test" options="-parameters" />
+      <module name="project-2026.web-socket-demo" options="-parameters" />
+      <module name="project-2026.web-socket-demo.main" options="-parameters" />
+      <module name="project-2026.web-socket-demo.test" options="-parameters" />
+      <module name="twitter" options="-parameters" />
+      <module name="twitter.main" options="-parameters" />
+      <module name="twitter.test" options="-parameters" />
+      <module name="web-socket-demo" options="-parameters" />
+      <module name="web-socket-demo.main" options="-parameters" />
+      <module name="web-socket-demo.test" options="-parameters" />
+    </option>
+  </component>
+</project>

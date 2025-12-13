@@ -1,0 +1,86 @@
+version: '3.9'
+
+services:
+
+  # -------------------------------------------------------
+  # PostgreSQL Database
+  # -------------------------------------------------------
+  postgres:
+    image: postgres:16
+    container_name: postgres
+    restart: always
+    environment:
+      POSTGRES_DB: twitterdb
+      POSTGRES_USER: twitter
+      POSTGRES_PASSWORD: twitter123
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  # -------------------------------------------------------
+  # Redis Cache
+  # -------------------------------------------------------
+  redis:
+    image: redis:7
+    container_name: redis
+    restart: always
+    ports:
+      - "6379:6379"
+
+  # -------------------------------------------------------
+  # Zookeeper (Kafka dependency)
+  # -------------------------------------------------------
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.5.0
+    container_name: zookeeper
+    restart: always
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    ports:
+      - "2181:2181"
+
+  # -------------------------------------------------------
+  # Kafka Broker
+  # -------------------------------------------------------
+  kafka:
+    image: confluentinc/cp-kafka:7.5.0
+    container_name: kafka
+    restart: always
+    depends_on:
+      - zookeeper
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+
+  # -------------------------------------------------------
+  # Spring Boot Application
+  # -------------------------------------------------------
+#   app:
+#     build: .
+#     container_name: twitter-app
+#     restart: always
+#     depends_on:
+#       - postgres
+#       - redis
+#       - kafka
+#     ports:
+#       - "8080:8080"
+#     environment:
+#       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/twitterdb
+#       SPRING_DATASOURCE_USERNAME: twitter
+#       SPRING_DATASOURCE_PASSWORD: twitter123
+#
+#       SPRING_REDIS_HOST: redis
+#       SPRING_REDIS_PORT: 6379
+#
+#       SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+
+volumes:
+  pgdata:
