@@ -2,3 +2,4 @@ rootProject.name='project-2026'
 include ("twitter")
 include ("doc")
 include ("web-socket-demo")
+include('java-simple')
