@@ -35,7 +35,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
             try {
                 if (s.isOpen()) {
                     // Sending a TextMessage as a response
-                    s.sendMessage(new TextMessage(" this is websocket demo "));
+                    s.sendMessage(new TextMessage(message.getPayload()));
                 }
             } catch (Exception e) {
                 // It's generally good practice to log or handle exceptions
