@@ -22,7 +22,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
 
         sessions.add(session);
 
-        session.sendMessage(new TextMessage(session.getId().toString() + " connected"));
+        session.sendMessage(new TextMessage(session.getId() + " connected"));
     }
 
     @Override
