@@ -30,10 +30,10 @@ public class WebSocketHandler extends TextWebSocketHandler {
         // 1. Log the incoming TEXT message (Fixes the no-print issue)
         System.out.println("Received message: " + message.getPayload());
 
-        // 2. Broadcast the response message
+        // 2. Broadcast the response message to all sessions except the sender
         for (WebSocketSession s : sessions) {
             try {
-                if (s.isOpen()) {
+                if (s.isOpen() && !s.getId().equals(session.getId())) {
                     // Sending a TextMessage as a response
                     s.sendMessage(new TextMessage(message.getPayload()));
                 }
